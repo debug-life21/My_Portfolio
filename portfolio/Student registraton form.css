@@ -1,0 +1,51 @@
+
+body{
+background: linear-gradient(135deg, #667eea, #764ba2);
+justify-content: center;
+align-items: center;
+display: flex;
+  height: 100vh;
+  
+}
+h1{
+   font-family: Arial, Helvetica, sans-serif; 
+    color:chocolate;
+    text-shadow: 12px;
+}
+form{
+  margin: auto;
+  background-color: #fff;
+  width: 400px;
+  height: 350px;
+  
+  padding: 10px;
+  border-radius: 12px;
+
+
+}
+.in{
+
+    padding: 8px;
+    margin: 3px;
+    width: 90%;
+    border-radius: 10px;
+    border-color: rgb(87, 87, 82);
+    border-width: 1px;
+}
+#re{
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    background-color: rgb(103, 103, 228);
+    border-radius: 40px;
+    padding: 10px;
+}
+#re:hover{
+    background-color: rgb(165, 83, 219);
+}
+select{
+    margin: 10px;
+    width: 70%;
+    padding: 8px;
+    
+}

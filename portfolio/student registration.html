@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>student registr form</title>
+    <link rel="stylesheet" href="Student registraton form.css">
+</head>
+<body>
+    <div>
+    <form id="regform" action="" mathod="post">
+        <h1>Student Register form</h1>
+        <lable>fullname:</lable>
+        <input class="in" id="name" type="text" name="email"  placeholder="enter fullname"><br>
+        <label>email:</label>
+        <input id="email" class="in" type="email" placeholder="enter email"><br>
+        <label for="">Gender:</label>
+        <input type="radio">male
+        <input type="radio">female
+        <input type="radio">others<br>
+        <label for="">departement:</label>
+
+        <select name="" id="dept">
+            <option value="">Computer scuince</option>
+            <option value="">Information</option>
+            <option value="">Software enginaring</option>
+        </select><br>
+        <button  id="re" type="submit" onclick="registerstud()">Register</button>
+
+    </form>
+    <button onclick="window.print()">print the webpage</button>
+    </div>
+<script src="java.js"></script>
+</body>
+</html>
