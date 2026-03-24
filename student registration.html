@@ -1,35 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>student registr form</title>
-    <link rel="stylesheet" href="Student registraton form.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Registration</title>
+  <link rel="stylesheet" href="Student registraton form.css" />
 </head>
 <body>
-    <div>
-    <form id="regform" action="" mathod="post">
-        <h1>Student Register form</h1>
-        <lable>fullname:</lable>
-        <input class="in" id="name" type="text" name="email"  placeholder="enter fullname"><br>
-        <label>email:</label>
-        <input id="email" class="in" type="email" placeholder="enter email"><br>
-        <label for="">Gender:</label>
-        <input type="radio">male
-        <input type="radio">female
-        <input type="radio">others<br>
-        <label for="">departement:</label>
+  <main class="page">
+    <section class="card">
+      <h1>Student Registration</h1>
+      <p class="subtext">Register with your details and submit securely.</p>
 
-        <select name="" id="dept">
-            <option value="">Computer scuince</option>
-            <option value="">Information</option>
-            <option value="">Software enginaring</option>
-        </select><br>
-        <button  id="re" type="submit" onclick="registerstud()">Register</button>
+      <form id="regform" novalidate>
+        <div class="field">
+          <label for="name">Full Name</label>
+          <input id="name" name="name" type="text" placeholder="Enter full name" required />
+          <small class="error" id="error-name"></small>
+        </div>
 
-    </form>
-    <button onclick="window.print()">print the webpage</button>
-    </div>
-<script src="java.js"></script>
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" placeholder="Enter email" required />
+          <small class="error" id="error-email"></small>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="Create password" required minlength="6" />
+          <small class="error" id="error-password"></small>
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone</label>
+          <input id="phone" name="phone" type="tel" placeholder="+1 234 567 890" required />
+          <small class="error" id="error-phone"></small>
+        </div>
+
+        <div class="field">
+          <label for="address">Address</label>
+          <input id="address" name="address" type="text" placeholder="Street, city, country" required />
+          <small class="error" id="error-address"></small>
+        </div>
+
+        <div class="field radio-group">
+          <span>Gender</span>
+          <label><input name="gender" type="radio" value="Male" /> Male</label>
+          <label><input name="gender" type="radio" value="Female" /> Female</label>
+          <label><input name="gender" type="radio" value="Other" /> Other</label>
+          <small class="error" id="error-gender"></small>
+        </div>
+
+        <div class="field">
+          <label for="dept">Department</label>
+          <select id="dept" name="department" required>
+            <option value="">Select department</option>
+            <option value="computer">Computer Science</option>
+            <option value="information">Information Technology</option>
+            <option value="software">Software Engineering</option>
+            <option value="network">Networking</option>
+          </select>
+          <small class="error" id="error-dept"></small>
+        </div>
+
+        <div class="field terms">
+          <label><input id="terms" name="terms" type="checkbox" /> I agree to the <a href="#">terms and conditions</a>.</label>
+          <small class="error" id="error-terms"></small>
+        </div>
+
+        <button id="re" type="submit">Register</button>
+      </form>
+
+      <button class="secondary" id="printBtn">Print Form</button>
+      <div id="message" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script src="java.js"></script>
 </body>
 </html>
