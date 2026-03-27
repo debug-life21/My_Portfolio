@@ -99,16 +99,13 @@ try {
     // If 11:00 AM Local = 5:00 PM International.
     // If 12:30 AM Local = 6:30 PM International.
     
-    // THIS MAKES SENSE! Ethiopian Local Time conversion.
-    // I will store them as International Time in DB for easier server comparison (assuming server uses standard time).
-    
-    // Breakfast: 1:00 - 2:00 Local => 07:00 - 08:00 International
-    // Lunch: 5:30 - 7:00 Local => 11:30 - 13:00 International
-    // Dinner: 11:00 - 12:30 Local => 17:00 - 18:30 International
-    
-    // I will use these International times for the DB values to match standard server clocks.
+    // Disable foreign key checks to allow truncate
+    $pdo->exec("SET FOREIGN_KEY_CHECKS = 0");
     
     $pdo->exec("TRUNCATE TABLE meal_sessions"); // Reset for fresh start with correct times
+    
+    // Re-enable foreign key checks
+    $pdo->exec("SET FOREIGN_KEY_CHECKS = 1");
     
     $pdo->exec("INSERT INTO meal_sessions (session_name, start_time, end_time) VALUES 
         ('Breakfast', '07:00:00', '08:00:00'),

@@ -14,7 +14,18 @@ if ($role !== 'admin') {
 }
 
 // Fetch students for Admin Dashboard
-$stmt = $pdo->query("SELECT id, fullname, email, phone, national_id, created_at FROM users WHERE role = 'student' ORDER BY created_at DESC");
+$search = $_GET['search'] ?? '';
+$query = "SELECT id, fullname, email, phone, national_id, created_at FROM users WHERE role = 'student'";
+$params = [];
+
+if ($search) {
+    $query .= " AND (fullname LIKE ? OR email LIKE ? OR national_id LIKE ?)";
+    $params = ["%$search%", "%$search%", "%$search%"];
+}
+
+$query .= " ORDER BY created_at DESC";
+$stmt = $pdo->prepare($query);
+$stmt->execute($params);
 $students = $stmt->fetchAll();
 ?>
 <?php include __DIR__ . '/header.php'; ?>
@@ -33,7 +44,16 @@ $students = $stmt->fetchAll();
     </div>
 
     <div class="students-list">
-        <h3><?= __('registered_students') ?></h3>
+        <div class="search-section">
+            <form method="GET" action="dashboard.php" class="search-form">
+                <input type="text" name="search" placeholder="Search students by name, email, or ID..." value="<?= htmlspecialchars($search) ?>" class="search-input">
+                <button type="submit" class="btn">Search</button>
+                <?php if ($search): ?>
+                    <a href="dashboard.php" class="btn reset">Clear</a>
+                <?php endif; ?>
+            </form>
+        </div>
+        <h3><?= __('registered_students') ?> (<?= count($students) ?>)</h3>
         <?php if (count($students) > 0): ?>
             <div style="overflow-x:auto;">
                 <table border="1" cellpadding="10" style="width:100%; border-collapse:collapse; margin-top: 10px;">

@@ -1,10 +1,22 @@
 <?php
+// Load environment variables from .env file if it exists
+if (file_exists(__DIR__ . '/.env')) {
+    $env = parse_ini_file(__DIR__ . '/.env');
+    foreach ($env as $key => $value) {
+        putenv("$key=$value");
+    }
+}
+
+// Error reporting (disable in production)
+ini_set('display_errors', getenv('APP_ENV') === 'production' ? 0 : 1);
+error_reporting(E_ALL);
+
 session_start();
 
-$host = 'localhost';
-$db   = 'dku_cafe';
-$user = 'root';          // your MySQL username
-$pass = '';              // your MySQL password
+$host = getenv('DB_HOST') ?: 'localhost';
+$db   = getenv('DB_NAME') ?: 'dku_cafe';
+$user = getenv('DB_USER') ?: 'root';          // your MySQL username
+$pass = getenv('DB_PASS') ?: '';              // your MySQL password
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -16,7 +28,8 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
+    error_log("Database connection failed: " . $e->getMessage());
+    die("Database connection failed. Please check your configuration.");
 }
 
 // Set Timezone to Ethiopia
