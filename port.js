@@ -1,4 +1,4 @@
-// Subtle scroll reveal + back-to-top + mobile nav + theme toggle.
+// Subtle scroll reveal + back-to-top + mobile nav + scrollspy.
 
 const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 const $ = (sel, root = document) => root.querySelector(sel);
@@ -21,6 +21,24 @@ if (toggle && links) {
       links.classList.remove("open");
       toggle.setAttribute("aria-expanded", "false");
     });
+  });
+
+  // Close on outside click / Esc (mobile)
+  document.addEventListener("click", (e) => {
+    if (!links.classList.contains("open")) return;
+    const t = e.target;
+    if (!(t instanceof Element)) return;
+    if (links.contains(t) || toggle.contains(t)) return;
+    links.classList.remove("open");
+    toggle.setAttribute("aria-expanded", "false");
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (!links.classList.contains("open")) return;
+    links.classList.remove("open");
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.focus();
   });
 }
 
@@ -53,19 +71,59 @@ if (backToTop) {
   });
 }
 
-// Theme toggle (stores preference)
-const themeToggle = $("#themeToggle");
-const root = document.documentElement;
+// Active nav link (scrollspy)
+const sectionIds = ["experience", "education", "skills", "projects", "contact"];
+const sections = sectionIds
+  .map((id) => document.getElementById(id))
+  .filter((el) => el instanceof HTMLElement);
 
-const saved = localStorage.getItem("theme");
-if (saved === "light" || saved === "dark") {
-  root.dataset.theme = saved;
+const navAnchors = new Map(
+  sectionIds
+    .map((id) => [id, document.querySelector(`.nav-links a[href="#${id}"]`)])
+    .filter(([, el]) => el instanceof HTMLAnchorElement)
+);
+
+const setActive = (id) => {
+  navAnchors.forEach((a, key) => {
+    if (!(a instanceof Element)) return;
+    a.classList.toggle("active", key === id);
+    if (key === id) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
+  });
+};
+
+if (sections.length) {
+  const spy = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((e) => e.isIntersecting)
+        .sort((a, b) => (a.intersectionRatio > b.intersectionRatio ? -1 : 1))[0];
+      if (!visible) return;
+      const id = visible.target.id;
+      if (id) setActive(id);
+    },
+    { rootMargin: "-20% 0px -70% 0px", threshold: [0.05, 0.2, 0.35] }
+  );
+
+  sections.forEach((s) => spy.observe(s));
 }
 
-if (themeToggle) {
-  themeToggle.addEventListener("click", () => {
-    const next = root.dataset.theme === "light" ? "dark" : "light";
-    root.dataset.theme = next;
-    localStorage.setItem("theme", next);
+// Contact form: open default email client (no backend needed)
+const contactForm = $("#contactForm");
+if (contactForm) {
+  contactForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const fd = new FormData(contactForm);
+    const name = String(fd.get("name") || "").trim();
+    const email = String(fd.get("email") || "").trim();
+    const message = String(fd.get("message") || "").trim();
+
+    const subject = encodeURIComponent(`Portfolio message from ${name || "Someone"}`);
+    const body = encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}\n`
+    );
+
+    window.location.href = `mailto:debuglife1221@gmail.com?subject=${subject}&body=${body}`;
   });
 }
