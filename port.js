@@ -47,7 +47,13 @@ const revealEls = $$(".reveal");
 const io = new IntersectionObserver(
   (entries) => {
     entries.forEach((e) => {
-      if (e.isIntersecting) e.target.classList.add("in-view");
+      if (e.isIntersecting) {
+        const el = e.target;
+        const delay = el.getAttribute("data-delay") || "0";
+        setTimeout(() => {
+          el.classList.add("in-view");
+        }, Number(delay));
+      }
     });
   },
   { threshold: 0.12 }
@@ -72,7 +78,7 @@ if (backToTop) {
 }
 
 // Active nav link (scrollspy)
-const sectionIds = ["experience", "education", "skills", "projects", "contact"];
+const sectionIds = ["services", "experience", "skills", "projects", "contact"];
 const sections = sectionIds
   .map((id) => document.getElementById(id))
   .filter((el) => el instanceof HTMLElement);
