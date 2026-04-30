@@ -56,6 +56,9 @@
           <div class="hero-actions">
             <a class="button primary" href="#contact">Get in Touch</a>
             <a class="button ghost" href="#projects">View Projects</a>
+           
+          <button class="button primary" id="downloadButton">Download Resume</button>
+  
           </div>
 
           <div class="hero-links" aria-label="Quick links">
@@ -358,5 +361,33 @@
   <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">↑</button>
 
   <script src="port.js"></script>
+
+ 
+
+
+
+// Resume download logic
+
+<script>
+  const downloadButton = document.getElementById('downloadButton');
+
+  downloadButton.addEventListener('click', function() {
+    const resumeUrl = 'Wendemu_Resume.pdf';
+    const resumeName = 'resume.pdf';
+
+    const link = document.createElement('a');
+    link.href = resumeUrl;
+    link.download = resumeName;
+    link.style.display = 'none';
+
+    document.body.appendChild(link);
+
+    link.click();
+
+   
+
+    document.body.removeChild(link);
+  });
+</script>
 </body>
 </html>
